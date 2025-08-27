@@ -137,6 +137,110 @@ O Inteli é uma instituição de ensino superior inovadora que utiliza metodolog
 
 Este projeto é desenvolvido no âmbito acadêmico do Instituto de Tecnologia e Liderança. Todos os direitos reservados.
 
+## 🔧 Instalação e Uso do LaTeX
+
+### Instalação do LaTeX
+
+#### Ubuntu/Debian
+```bash
+# Atualizar repositórios
+sudo apt update
+
+# Instalar pacotes básicos do LaTeX
+sudo apt install -y texlive-latex-base texlive-latex-recommended texlive-fonts-recommended
+
+# Para instalação mais completa (opcional)
+sudo apt install -y texlive-full
+```
+
+#### Verificar instalação
+```bash
+pdflatex --version
+bibtex --version
+```
+
+### Compilação de Documentos
+
+#### Compilar arquivo .tex simples
+```bash
+pdflatex documento.tex
+```
+
+#### Compilar com bibliografia (BibTeX)
+Para documentos com referências bibliográficas, siga esta sequência:
+
+```bash
+# 1. Primeira compilação do LaTeX
+pdflatex documento.tex
+
+# 2. Compilar bibliografia
+bibtex documento
+
+# 3. Segunda compilação do LaTeX (para resolver referências)
+pdflatex documento.tex
+
+# 4. Terceira compilação do LaTeX (para finalizar numeração)
+pdflatex documento.tex
+```
+
+#### Script de compilação automática
+Crie um script `compile.sh` para automatizar:
+
+```bash
+#!/bin/bash
+if [ $# -eq 0 ]; then
+    echo "Uso: ./compile.sh nome_do_arquivo_sem_extensao"
+    exit 1
+fi
+
+FILE=$1
+
+echo "Compilando $FILE.tex..."
+pdflatex $FILE.tex
+bibtex $FILE
+pdflatex $FILE.tex
+pdflatex $FILE.tex
+
+echo "Compilação concluída! Arquivo gerado: $FILE.pdf"
+```
+
+Para usar:
+```bash
+chmod +x compile.sh
+./compile.sh revisao_bibliometrica_gd_pbl
+```
+
+#### Exemplo de compilação do artigo deste projeto
+```bash
+# Navegar para o diretório do artigo
+cd artigo/
+
+# Compilar o artigo com bibliografia
+pdflatex revisao_bibliometrica_gd_pbl.tex
+bibtex revisao_bibliometrica_gd_pbl
+pdflatex revisao_bibliometrica_gd_pbl.tex
+pdflatex revisao_bibliometrica_gd_pbl.tex
+```
+
+#### Limpeza de arquivos temporários
+Após a compilação, você pode remover arquivos temporários:
+
+```bash
+# Remover arquivos auxiliares
+rm -f *.aux *.log *.bbl *.blg *.toc *.out *.fdb_latexmk *.fls
+
+# Ou criar um script clean.sh
+echo "rm -f *.aux *.log *.bbl *.blg *.toc *.out *.fdb_latexmk *.fls" > clean.sh
+chmod +x clean.sh
+```
+
+### Dicas importantes
+
+- Use **UTF-8** como codificação para caracteres especiais
+- Para projetos grandes, compile frequentemente para detectar erros
+- Mantenha backup dos arquivos .bib
+- Use editores como VS Code com extensão LaTeX Workshop para facilitar o desenvolvimento
+
 ## 🙏 Agradecimentos
 
 - Instituto de Tecnologia e Liderança (Inteli)
